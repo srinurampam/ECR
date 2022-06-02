@@ -2,7 +2,7 @@ pipeline {
   
   stages {
     
-  stage 'clone'
+  stage 'checkout'
  git branch: 'main', url: 'https://https://github.com/srinurampam/ECR.git'
  
   stage 'Docker build'
