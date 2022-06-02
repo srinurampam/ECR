@@ -1,8 +1,5 @@
-pipeline {
-  agent any
-  
-  stages {
-    
+
+  node {
   stage 'checkout'
  git branch: 'main', url: 'https://https://github.com/srinurampam/ECR.git'
  
@@ -14,4 +11,4 @@ pipeline {
     docker.image('myrepo').push('latest')
   }
 }
-}
+
