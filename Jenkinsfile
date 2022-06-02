@@ -1,5 +1,11 @@
 
   pipeline {
+    
+     environment {
+    imagename = "srinu/petclinics"
+    registryCredential = 'mycred'
+    dockerImage = ''
+  }
     agent any
     
     stages {
