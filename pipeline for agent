@@ -1,0 +1,41 @@
+pipeline {
+      environment {
+        registry = "858299432048.dkr.ecr.ap-south-1.amazonaws.com/myrepo"
+    }
+     agent {label 'test server'}
+     
+    stages {
+        stage('clone') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/srinurampam/spring-petclinic.git']]])
+            }
+        }
+           stage('BUILD') {
+            steps {
+                echo 'Build the code'
+                sh './mvnw package'
+            }
+       }
+       
+            stage('DOCKERIZE') {
+            steps {
+                echo 'Deploy the code'
+                
+                script {
+                    
+                     dockerImage = docker.build registry
+                    
+                }
+            } 
+                 } 
+                     stage('Pushing to ECR') {
+            steps{  
+            script {
+                sh 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 858299432048.dkr.ecr.ap-south-1.amazonaws.com'
+                sh 'docker push 858299432048.dkr.ecr.ap-south-1.amazonaws.com/myrepo:latest'
+         }
+     }
+                     }
+
+}
+}
